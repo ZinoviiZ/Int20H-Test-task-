@@ -1,0 +1,16 @@
+com/risingapp/test/MainController.class
+com/risingapp/test/response/OvvaResponse.class
+com/risingapp/test/service/OvvaService.class
+com/risingapp/test/model/OvvaTvProgram.class
+com/risingapp/test/connector/OvvaConnector.class
+com/risingapp/test/Application.class
+com/risingapp/test/cache/CacheManager.class
+com/risingapp/test/response/OvvaTvProgramResponse.class
+com/risingapp/test/service/VkUserApiService.class
+com/risingapp/test/connector/VkAuthorizeConnector.class
+com/risingapp/test/enums/OvvaLanguage.class
+com/risingapp/test/model/OvvaImage.class
+com/risingapp/test/cache/CacheManager$TvProgramId.class
+com/risingapp/test/enums/OvvaAction.class
+com/risingapp/test/service/VkApiService.class
+com/risingapp/test/model/OvvaProgram.class
