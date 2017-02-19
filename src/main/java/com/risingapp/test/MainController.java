@@ -1,3 +1,6 @@
+/**
+ * Created by zinoviyzubko on 18.02.17.
+ */
 package com.risingapp.test;
 
 import com.risingapp.test.service.OvvaService;
@@ -15,14 +18,21 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-/**
- * Created by zinoviyzubko on 18.02.17.
- */
 @Controller
 public class MainController {
 
-    @Autowired private VkUserApiService vkUserApiService;
-    @Autowired private OvvaService ovvaService;
+    private VkUserApiService vkUserApiService;
+    private OvvaService ovvaService;
+
+    @Autowired
+    public void setVkUserApiService(VkUserApiService vkUserApiService) {
+        this.vkUserApiService = vkUserApiService;
+    }
+
+    @Autowired
+    public void setOvvaService(OvvaService ovvaService) {
+        this.ovvaService = ovvaService;
+    }
 
     @RequestMapping("/")
     public String getIndex() {
@@ -31,13 +41,11 @@ public class MainController {
 
     @RequestMapping("/get_tv_program")
     public ResponseEntity getImage(HttpServletResponse response) throws URISyntaxException, IOException, FontFormatException {
-
         return ovvaService.getTvProgram(response);
     }
 
     @RequestMapping("/create")
     public String firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
-
         vkUserApiService.postImageInGroup(code);
         return "wellDone.html";
     }

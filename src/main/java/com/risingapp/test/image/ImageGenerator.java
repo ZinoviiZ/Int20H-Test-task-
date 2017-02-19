@@ -77,10 +77,10 @@ public class ImageGenerator {
         graphicsGlobal.drawString(parseTime(programs.get(0).getRealtime_begin()), 370, yText + 20);
 
         graphicsGlobal.drawString(programs.get(programs.size() / 2).getTitle(), 370, yText + 256);
-        graphicsGlobal.drawString(parseTime(programs.get(0).getRealtime_begin()), 370, yText + 276);
+        graphicsGlobal.drawString(parseTime(programs.get(programs.size() / 2).getRealtime_begin()), 370, yText + 276);
 
         graphicsGlobal.drawString(programs.get(programs.size() - 1).getTitle(), 370, yText + 512);
-        graphicsGlobal.drawString(parseTime(programs.get(0).getRealtime_begin()), 370, yText + 532);
+        graphicsGlobal.drawString(parseTime(programs.get(programs.size() - 1).getRealtime_begin()), 370, yText + 532);
 
         return resultImage;
     }
