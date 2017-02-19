@@ -89,7 +89,8 @@ public class ImageGenerator {
 
     //TODO fix
     private String parseTime(int dateTime) {
+        long longTime = (long) dateTime * 1000L;
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        return localDateFormat.format(new Date(dateTime));
+        return localDateFormat.format(new Date(longTime));
     }
 }
