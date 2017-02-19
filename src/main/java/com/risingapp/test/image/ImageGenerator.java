@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @org.springframework.stereotype.Component
-public class Redactor {
+public class ImageGenerator {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 700;
     private static final int LEFT_POS = 10;
@@ -86,8 +86,8 @@ public class Redactor {
     }
 
     //TODO fix
-    private String parseTime(Object dateTime) {
+    private String parseTime(int dateTime) {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        return localDateFormat.format(new Date());
+        return localDateFormat.format(new Date(dateTime));
     }
 }

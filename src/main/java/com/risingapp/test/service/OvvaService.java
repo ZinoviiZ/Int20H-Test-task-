@@ -6,9 +6,8 @@ import com.risingapp.test.creator.OvvaQueryCreator;
 import com.risingapp.test.enums.OvvaAction;
 import com.risingapp.test.enums.OvvaChannel;
 import com.risingapp.test.enums.OvvaLanguage;
-import com.risingapp.test.image.Redactor;
+import com.risingapp.test.image.ImageGenerator;
 import com.risingapp.test.response.OvvaTvProgramResponse;
-import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class OvvaService {
     @Autowired private CacheManager cacheManager;
 
     @Autowired private OvvaQueryCreator queryCreator;
-    @Autowired private Redactor imageGenerator;
+    @Autowired private ImageGenerator imageGenerator;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

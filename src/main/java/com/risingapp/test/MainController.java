@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -28,7 +30,7 @@ public class MainController {
     }
 
     @RequestMapping("/get_tv_program")
-    public ResponseEntity getImage(HttpServletResponse response) throws URISyntaxException {
+    public ResponseEntity getImage(HttpServletResponse response) throws URISyntaxException, IOException, FontFormatException {
 
         return ovvaService.getTvProgram(response);
     }
