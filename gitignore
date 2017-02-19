@@ -1,0 +1,9 @@
+.idea
+*.iml
+target
+src/main/webapp/client-prod
+node_modules
+bower_components
+*.log
+photos
+.DS_Store

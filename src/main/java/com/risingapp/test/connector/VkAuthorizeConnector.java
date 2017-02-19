@@ -4,6 +4,7 @@ import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.exceptions.OAuthException;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -27,10 +28,17 @@ public class VkAuthorizeConnector {
 
     public UserActor getVkUser(VkApiClient vk, String code) throws ClientException, ApiException {
 
-        UserAuthResponse authResponse = vk.oauth()
-                .userAuthorizationCodeFlow(clientId, clientSecret, redirectUrl, code)
-                .execute();
+        UserActor userActor = null;
+        try {
 
-        return new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+            UserAuthResponse authResponse = vk.oauth()
+                    .userAuthorizationCodeFlow(clientId, clientSecret, redirectUrl, code)
+                    .execute();
+            userActor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+        } catch (OAuthException e) {
+            e.getRedirectUri();
+        }
+
+        return userActor;
     }
 }

@@ -42,6 +42,8 @@ public class ImageGenerator {
             graphicsGlobal.setColor(new Color(0, 140, 255, 255));
             graphicsGlobal.drawString(parseTime(currenProgram.getRealtime_begin()), LEFT_POS, yPos);
 
+            System.out.println(parseTime(currenProgram.getRealtime_begin()));
+
             graphicsGlobal.setFont(new Font("default", Font.PLAIN, 18));
             graphicsGlobal.setColor(new Color(255, 255, 255));
             graphicsGlobal.drawString(currenProgram.getTitle(), LEFT_POS + 70, yPos);
