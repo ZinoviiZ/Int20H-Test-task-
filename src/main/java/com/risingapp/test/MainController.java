@@ -36,7 +36,7 @@ public class MainController {
     @RequestMapping("/create")
     public String firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
 
-        //vkUserApiService.postImageInGroup(code);
+        vkUserApiService.postImageInGroup(code);
         return "wellDone.html";
     }
 }

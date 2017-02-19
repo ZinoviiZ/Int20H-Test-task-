@@ -6,6 +6,7 @@ import com.risingapp.test.creator.OvvaQueryCreator;
 import com.risingapp.test.enums.OvvaAction;
 import com.risingapp.test.enums.OvvaChannel;
 import com.risingapp.test.enums.OvvaLanguage;
+import com.risingapp.test.image.Redactor;
 import com.risingapp.test.response.OvvaTvProgramResponse;
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
@@ -14,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,14 +36,18 @@ public class OvvaService {
     @Autowired private CacheManager cacheManager;
 
     @Autowired private OvvaQueryCreator queryCreator;
+    @Autowired private Redactor imageGenerator;
+
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ResponseEntity getTvProgram(HttpServletResponse httpServletResponse) throws URISyntaxException {
+    public ResponseEntity getTvProgram(HttpServletResponse httpServletResponse) throws URISyntaxException, IOException, FontFormatException {
 
         String query = queryCreator.createQuery(OvvaAction.GET_TV_PROGRAM, OvvaLanguage.UA, OvvaChannel.CHANNEL_1PLUS1.getValue());
         OvvaTvProgramResponse ovvaTvProgramResponse = ovvaConnector.send(query, OvvaTvProgramResponse.class);
 
-        File file = new File("/Users/zinoviyzubko/Desktop/Developing/RisingTest/src/main/webapp/test.png");
+        BufferedImage bufferedImage = imageGenerator.processProgram(ovvaTvProgramResponse);
+        File file = new File("test.png");
+        ImageIO.write(bufferedImage, "png", file);
 
         cacheManager.addTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue(), file);
 
