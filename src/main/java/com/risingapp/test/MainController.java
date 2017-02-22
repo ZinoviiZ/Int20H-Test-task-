@@ -32,13 +32,20 @@ public class MainController {
     }
 
     @RequestMapping("/create")
-    public @ResponseBody GetImageUrlResponse firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
-        return vkUserApiService.getImageUrl(code);
+    public String saveImage(@RequestParam("code") String code) throws ClientException, ApiException {
+
+        vkUserApiService.save(code);
+        return "welcome.html";
     }
 
+    @RequestMapping("/get_image_url")
+    public @ResponseBody GetImageUrlResponse getImageUrl() {
+
+        return vkUserApiService.getImageUrl();
+    }
 
     @RequestMapping("/get_tv_program")
-    public ResponseEntity getImage(HttpServletResponse response) throws FontFormatException, IOException, URISyntaxException {
+    public ResponseEntity getTvProgram(HttpServletResponse response) throws FontFormatException, IOException, URISyntaxException {
 
         return ovvaService.getTvProgram(response);
     }

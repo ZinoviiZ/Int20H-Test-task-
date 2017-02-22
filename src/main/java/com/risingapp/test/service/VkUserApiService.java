@@ -1,6 +1,7 @@
 package com.risingapp.test.service;
 
 import com.risingapp.test.cache.FileCacheManager;
+import com.risingapp.test.cache.UrlCacheManager;
 import com.risingapp.test.connector.VkAuthorizeConnector;
 import com.risingapp.test.enums.OvvaChannel;
 import com.risingapp.test.response.GetImageUrlResponse;
@@ -36,6 +37,7 @@ public class VkUserApiService {
 
     @Autowired private VkAuthorizeConnector vkAuthorize;
     @Autowired private FileCacheManager fileCacheManager;
+    @Autowired private UrlCacheManager urlCacheManager;
 
     @PostConstruct
     private void init() {
@@ -43,7 +45,7 @@ public class VkUserApiService {
         vk = new VkApiClient(HttpTransportClient.getInstance());
     }
 
-    public GetImageUrlResponse getImageUrl(String code) throws ClientException, ApiException {
+    public void save(String code) throws ClientException, ApiException {
 
         UserActor actor = vkAuthorize.getVkUser(vk, code);
         File file = fileCacheManager.getTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue());
@@ -61,9 +63,15 @@ public class VkUserApiService {
                 .execute();
 
         Photo photo = photoList.get(0);
-        GetImageUrlResponse response = new GetImageUrlResponse();
 
-        response.setImageUrl(photo.getPhoto807());
-        return response;
+        urlCacheManager.addUrl(photo.getPhoto807(), sdf.format(new Date()));
+    }
+
+    public GetImageUrlResponse getImageUrl() {
+
+        GetImageUrlResponse imageUrlResponse = new GetImageUrlResponse();
+        String url = urlCacheManager.getUrl(sdf.format(new Date()));
+        imageUrlResponse.setImageUrl(url);
+        return imageUrlResponse;
     }
 }
