@@ -7,7 +7,9 @@ import com.risingapp.test.enums.OvvaAction;
 import com.risingapp.test.enums.OvvaChannel;
 import com.risingapp.test.enums.OvvaLanguage;
 import com.risingapp.test.image.ImageGenerator;
+import com.risingapp.test.response.GetTvProgramResponse;
 import com.risingapp.test.response.OvvaTvProgramResponse;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,26 +41,30 @@ public class OvvaService {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ResponseEntity getTvProgram(HttpServletResponse httpServletResponse) throws URISyntaxException, IOException, FontFormatException {
+    public GetTvProgramResponse getTvProgram() throws URISyntaxException, IOException, FontFormatException {
 
-        String query = queryCreator.createQuery(OvvaAction.GET_TV_PROGRAM, OvvaLanguage.UA, OvvaChannel.CHANNEL_1PLUS1.getValue());
-        OvvaTvProgramResponse ovvaTvProgramResponse = ovvaConnector.send(query, OvvaTvProgramResponse.class);
+        GetTvProgramResponse response = new GetTvProgramResponse();
 
-        BufferedImage bufferedImage = imageGenerator.processProgram(ovvaTvProgramResponse);
-        File file = new File("test.png");
-        ImageIO.write(bufferedImage, "png", file);
+        File imgFile = cacheManager.getTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue());
+        if (imgFile == null) {
+            String query = queryCreator.createQuery(OvvaAction.GET_TV_PROGRAM, OvvaLanguage.UA, OvvaChannel.CHANNEL_1PLUS1.getValue());
+            OvvaTvProgramResponse ovvaTvProgramResponse = ovvaConnector.send(query, OvvaTvProgramResponse.class);
 
-        cacheManager.addTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue(), file);
+            BufferedImage bufferedImage = imageGenerator.processProgram(ovvaTvProgramResponse);
+            imgFile = new File("test.png");
+            ImageIO.write(bufferedImage, "png", imgFile);
+            cacheManager.addTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue(), imgFile);
+        }
 
-        try(FileInputStream inputStream = new FileInputStream(file)) {
+        try(FileInputStream inputStream = new FileInputStream(imgFile)) {
 
         byte[] bytes = IOUtils.toByteArray(inputStream);
-            httpServletResponse.setContentType("image/png");
-            httpServletResponse.getOutputStream().write(bytes);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+        String imgBase64 = Base64.encode(bytes);
+        response.setImageBase64(imgBase64);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
+
+        return response;
     }
 }

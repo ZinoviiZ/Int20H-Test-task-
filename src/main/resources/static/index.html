@@ -39,31 +39,14 @@
 </style>
 <body>
 <section class="button-wrapper">
-  <button id="create-btn">Create program</button>
+  <button id="create-btn">Get tv program</button>
 </section>
 <script>
   (function() {
-    var params = {
-      client_id: 5884363,
-      display: 'popup',
-      redirect_uri: 'http://localhost:8080/create',
-    scope: 'wall,groups,photos',
-      response_type: 'code',
-      v: 5.62
-    };
 
-    document.querySelector('#create-btn').addEventListener('click', function(e) {
-      location.href = 'https://oauth.vk.com/authorize' + formatParams(params);
+    document.querySelector('#create-btn').addEventListener('click'{
+      location.href = 'http://localhost:8080/get_tv_program';
     });
-
-    function formatParams( params ){
-      return "?" + Object
-          .keys(params)
-          .map(function(key){
-            return key+"="+params[key]
-          })
-          .join("&")
-    }
   })();
 </script>
 </body>

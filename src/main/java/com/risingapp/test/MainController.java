@@ -3,8 +3,8 @@
  */
 package com.risingapp.test;
 
+import com.risingapp.test.response.GetTvProgramResponse;
 import com.risingapp.test.service.OvvaService;
-import com.risingapp.test.service.VkUserApiService;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -21,18 +22,7 @@ import java.net.URISyntaxException;
 @Controller
 public class MainController {
 
-    private VkUserApiService vkUserApiService;
-    private OvvaService ovvaService;
-
-    @Autowired
-    public void setVkUserApiService(VkUserApiService vkUserApiService) {
-        this.vkUserApiService = vkUserApiService;
-    }
-
-    @Autowired
-    public void setOvvaService(OvvaService ovvaService) {
-        this.ovvaService = ovvaService;
-    }
+    @Autowired private OvvaService ovvaService;
 
     @RequestMapping("/")
     public String getIndex() {
@@ -40,13 +30,7 @@ public class MainController {
     }
 
     @RequestMapping("/get_tv_program")
-    public ResponseEntity getImage(HttpServletResponse response) throws URISyntaxException, IOException, FontFormatException {
-        return ovvaService.getTvProgram(response);
-    }
-
-    @RequestMapping("/create")
-    public String firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
-        vkUserApiService.postImageInGroup(code);
-        return "wellDone.html";
+    public @ResponseBody GetTvProgramResponse getImage() throws URISyntaxException, IOException, FontFormatException {
+        return ovvaService.getTvProgram();
     }
 }
