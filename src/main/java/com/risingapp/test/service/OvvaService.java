@@ -7,7 +7,9 @@ import com.risingapp.test.enums.OvvaAction;
 import com.risingapp.test.enums.OvvaChannel;
 import com.risingapp.test.enums.OvvaLanguage;
 import com.risingapp.test.image.ImageGenerator;
+import com.risingapp.test.response.GetTvProgramResponse;
 import com.risingapp.test.response.OvvaTvProgramResponse;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,26 +41,28 @@ public class OvvaService {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ResponseEntity getTvProgram(HttpServletResponse httpServletResponse) throws URISyntaxException, IOException, FontFormatException {
+    public ResponseEntity getTvProgram(HttpServletResponse response) throws URISyntaxException, IOException, FontFormatException {
 
-        String query = queryCreator.createQuery(OvvaAction.GET_TV_PROGRAM, OvvaLanguage.UA, OvvaChannel.CHANNEL_1PLUS1.getValue());
-        OvvaTvProgramResponse ovvaTvProgramResponse = ovvaConnector.send(query, OvvaTvProgramResponse.class);
+        File imgFile = cacheManager.getTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue());
+        if (imgFile == null) {
+            String query = queryCreator.createQuery(OvvaAction.GET_TV_PROGRAM, OvvaLanguage.UA, OvvaChannel.CHANNEL_1PLUS1.getValue());
+            OvvaTvProgramResponse ovvaTvProgramResponse = ovvaConnector.send(query, OvvaTvProgramResponse.class);
 
-        BufferedImage bufferedImage = imageGenerator.processProgram(ovvaTvProgramResponse);
-        File file = new File("test.png");
-        ImageIO.write(bufferedImage, "png", file);
+            BufferedImage bufferedImage = imageGenerator.processProgram(ovvaTvProgramResponse);
+            imgFile = new File("test.png");
+            ImageIO.write(bufferedImage, "png", imgFile);
+            cacheManager.addTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue(), imgFile);
+        }
 
-        cacheManager.addTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue(), file);
-
-        try(FileInputStream inputStream = new FileInputStream(file)) {
+        try(FileInputStream inputStream = new FileInputStream(imgFile)) {
 
         byte[] bytes = IOUtils.toByteArray(inputStream);
-            httpServletResponse.setContentType("image/png");
-            httpServletResponse.getOutputStream().write(bytes);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            response.setContentType("image/png");
+            response.getOutputStream().write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

@@ -39,15 +39,15 @@
 </style>
 <body>
 <section class="button-wrapper">
-  <button id="create-btn">Create program</button>
+  <button id="create-btn">Get image url</button>
 </section>
 <script>
   (function() {
     var params = {
       client_id: 5884363,
-      display: 'popup',
+      display: 'page',
       redirect_uri: 'http://localhost:8080/create',
-    scope: 'wall,groups,photos',
+        scope: 'photos,wall,groups',
       response_type: 'code',
       v: 5.62
     };

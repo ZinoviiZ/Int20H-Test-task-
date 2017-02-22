@@ -7,14 +7,12 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.exceptions.OAuthException;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by zinoviyzubko on 18.02.17.
+ * Created by zinoviyzubko on 22.02.17.
  */
 @Component
-@PropertySource("classpath:vk.properties")
 public class VkAuthorizeConnector {
 
     @Value("${client_id}")
