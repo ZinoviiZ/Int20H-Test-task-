@@ -31,6 +31,12 @@ public class MainController {
         return "index.html";
     }
 
+    @RequestMapping("/get_tv_program")
+    public ResponseEntity getTvProgram(HttpServletResponse response) throws FontFormatException, IOException, URISyntaxException {
+
+        return ovvaService.getTvProgram(response);
+    }
+
     @RequestMapping("/create")
     public String saveImage(@RequestParam("code") String code) throws ClientException, ApiException {
 
@@ -42,11 +48,5 @@ public class MainController {
     public @ResponseBody GetImageUrlResponse getImageUrl() {
 
         return vkUserApiService.getImageUrl();
-    }
-
-    @RequestMapping("/get_tv_program")
-    public ResponseEntity getTvProgram(HttpServletResponse response) throws FontFormatException, IOException, URISyntaxException {
-
-        return ovvaService.getTvProgram(response);
     }
 }

@@ -2,68 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>RisingAppTest</title>
+  <title>RisingApp</title>
+  <style>
+    .button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .button-wrapper button {
+      color: #fff;
+      margin-top: -50px;
+      text-shadow: -2px 2px #346392;
+      background-color: #e16e46;
+      box-shadow: inset 0 0 0 1px #27496d;
+      border: none;
+      border-radius: 70px;
+      padding: 15px 45px;
+      font-size: 48px;
+      font-family: "Trebuchet MS", sans-serif;
+      line-height: 1.8;
+      outline: none;
+      transition: all 0.15s ease-in-out;
+      cursor: pointer;
+    }
+
+    .button-wrapper button:hover {
+      box-shadow: inset 0 0 0 1px #27496d,0 5px 15px #193047;
+    }
+
+    .button-wrapper button:active {
+      box-shadow: inset 0 0 0 1px #27496d,inset 0 5px 30px #193047;
+    }
+  </style>
 </head>
-<style>
-  .button-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .button-wrapper button {
-    color: #fff;
-    margin-top: -50px;
-    text-shadow: -2px 2px #346392;
-    background-color: #e16e46;
-    box-shadow: inset 0 0 0 1px #27496d;
-    border: none;
-    border-radius: 70px;
-    padding: 15px 45px;
-    font-size: 48px;
-    font-family: "Trebuchet MS", sans-serif;
-    line-height: 1.8;
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    cursor: pointer;
-  }
-
-  .button-wrapper button:hover {
-    box-shadow: inset 0 0 0 1px #27496d,0 5px 15px #193047;
-  }
-
-  .button-wrapper button:active {
-    box-shadow: inset 0 0 0 1px #27496d,inset 0 5px 30px #193047;
-  }
-</style>
 <body>
+
 <section class="button-wrapper">
-  <button id="create-btn">Get image url</button>
-  <img src="http://localhost:8080/get_tv_program" alt="Mountain View" style="width:700px;height:700px;">
+  <button id="create-btn">Create TV program!</button>
+  <button id="post-btn">Post this program on community wall!</button>
 </section>
+
 <script>
   (function() {
-    var params = {
+    var connectionParams = {
       client_id: 5884363,
       display: 'page',
       redirect_uri: 'http://localhost:8080/create',
-        scope: 'photos,wall,groups',
+      scope: 'groups,wall,photos',
       response_type: 'code',
       v: 5.62
     };
 
-    document.querySelector('#create-btn').addEventListener('click', function(e) {
-      location.href = 'https://oauth.vk.com/authorize' + formatParams(params);
+    document.getElementById('create-btn').addEventListener('click', function(e) {
+      var img = document.createElement('img');
+      img.src = 'http://localhost:8080/get_tv_program';
+      document.body.appendChild(img);
     });
 
-    function formatParams( params ){
-      return "?" + Object
-          .keys(params)
-          .map(function(key){
-            return key+"="+params[key]
-          })
-          .join("&")
+    document.getElementById('post-btn').addEventListener('click', function(e) {
+      location.href = 'https://oauth.vk.com/authorize' + formatParams(connectionParams);
+    });
+
+    function formatParams(params) {
+      return '?' + Object.keys(params)
+          .map(function(key) {
+            return key + '=' + params[key]
+          }).join('&');
     }
   })();
 </script>
