@@ -1,77 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>RisingApp</title>
-  <style>
-    .button-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .button-wrapper button {
-      color: #fff;
-      margin-top: -50px;
-      text-shadow: -2px 2px #346392;
-      background-color: #e16e46;
-      box-shadow: inset 0 0 0 1px #27496d;
-      border: none;
-      border-radius: 70px;
-      padding: 15px 45px;
-      font-size: 48px;
-      font-family: "Trebuchet MS", sans-serif;
-      line-height: 1.8;
-      outline: none;
-      transition: all 0.15s ease-in-out;
-      cursor: pointer;
-    }
-
-    .button-wrapper button:hover {
-      box-shadow: inset 0 0 0 1px #27496d,0 5px 15px #193047;
-    }
-
-    .button-wrapper button:active {
-      box-shadow: inset 0 0 0 1px #27496d,inset 0 5px 30px #193047;
-    }
-  </style>
-</head>
-<body>
-
-<section class="button-wrapper">
-  <button id="create-btn">Create TV program!</button>
-  <button id="post-btn">Post this program on community wall!</button>
-</section>
-
-<script>
-  (function() {
-    var connectionParams = {
-      client_id: 5884363,
-      display: 'page',
-      redirect_uri: 'http://localhost:8080/create',
-      scope: 'groups,wall,photos',
-      response_type: 'code',
-      v: 5.62
-    };
-
-    document.getElementById('create-btn').addEventListener('click', function(e) {
-      var img = document.createElement('img');
-      img.src = 'http://localhost:8080/get_tv_program';
-      document.body.appendChild(img);
-    });
-
-    document.getElementById('post-btn').addEventListener('click', function(e) {
-      location.href = 'https://oauth.vk.com/authorize' + formatParams(connectionParams);
-    });
-
-    function formatParams(params) {
-      return '?' + Object.keys(params)
-          .map(function(key) {
-            return key + '=' + params[key]
-          }).join('&');
-    }
-  })();
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" />
+    <title>RisingApp</title>
+  </head>
+  <body>
+  <section id="container">
+    <header>You can share daily teleprogramm in groups</header>
+    <button id="create-btn" class="btn">Load teleprogramm</button>
+    <button hidden id="post-btn" class="btn">Post teleprogramm</button>
+  </section>
+  <script src='script.js'></script>
+  </body>
 </html>

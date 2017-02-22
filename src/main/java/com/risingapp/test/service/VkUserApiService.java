@@ -64,7 +64,7 @@ public class VkUserApiService {
 
         Photo photo = photoList.get(0);
 
-        urlCacheManager.addUrl(photo.getPhoto807(), sdf.format(new Date()));
+        urlCacheManager.addUrl("photo" + actor.getId() + "_" + photo.getId(), sdf.format(new Date()));
     }
 
     public GetImageUrlResponse getImageUrl() {
