@@ -12,11 +12,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 @org.springframework.stereotype.Component
 public class ImageGenerator {
-    private static final int HEIGHT = 768;
+    private static final int HEIGHT = 800;
     private static final int WIDTH = 700;
     private static final int LEFT_POS = 10;
 
@@ -44,9 +44,12 @@ public class ImageGenerator {
 
             graphicsGlobal.setFont(new Font("default", Font.PLAIN, 18));
             graphicsGlobal.setColor(new Color(255, 255, 255));
-            graphicsGlobal.drawString(currenProgram.getTitle(), LEFT_POS + 70, yPos);
 
-            yPos += 30;
+
+            for (String line : getTitleLines(currenProgram.getTitle())) {
+                graphicsGlobal.drawString(line, LEFT_POS + 70, yPos);
+                yPos += 30;
+            }
         }
 
         // draw 3 big images
@@ -85,7 +88,27 @@ public class ImageGenerator {
         return resultImage;
     }
 
-    //TODO fix
+    private static java.util.List<String> getTitleLines(String title) {
+
+        java.util.List<String> lines = new ArrayList<>();
+        if (title.length() <= 26) return Arrays.asList(title);
+
+        int s = 0;
+        String[] words = title.split(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (i == words.length - 1) return Arrays.asList(title);
+
+            if (words[i].length() + s > 24) {
+
+                lines.add(title.substring(0, s - 1));
+                lines.addAll(getTitleLines(title.substring(s, title.length())));
+                break;
+            }
+            s += words[i].length() + 1;
+        }
+        return lines;
+    }
+
     private String parseTime(int dateTime) {
         long longTime = (long) dateTime * 1000L;
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
