@@ -41,7 +41,7 @@ public class MainController {
     public String saveImage(@RequestParam("code") String code) throws ClientException, ApiException {
 
         vkUserApiService.save(code);
-        return "welcome.html";
+        return "result.html";
     }
 
     @RequestMapping("/get_image_url")

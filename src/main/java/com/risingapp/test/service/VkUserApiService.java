@@ -1,9 +1,11 @@
 package com.risingapp.test.service;
 
 import com.risingapp.test.cache.FileCacheManager;
+import com.risingapp.test.cache.GroupCacheManager;
 import com.risingapp.test.cache.UrlCacheManager;
 import com.risingapp.test.connector.VkAuthorizeConnector;
 import com.risingapp.test.enums.OvvaChannel;
+import com.risingapp.test.enums.VkGroup;
 import com.risingapp.test.response.GetImageUrlResponse;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -38,6 +40,7 @@ public class VkUserApiService {
     @Autowired private VkAuthorizeConnector vkAuthorize;
     @Autowired private FileCacheManager fileCacheManager;
     @Autowired private UrlCacheManager urlCacheManager;
+    @Autowired private GroupCacheManager groupCacheManager;
 
     @PostConstruct
     private void init() {
@@ -50,7 +53,7 @@ public class VkUserApiService {
         UserActor actor = vkAuthorize.getVkUser(vk, code);
         File file = fileCacheManager.getTvProgram(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1.getValue());
 
-        SearchResponse searchResponse = vk.groups().search(actor, "RisingApp").execute();
+        SearchResponse searchResponse = vk.groups().search(actor, VkGroup.RISING_APP.getGroupName()).execute();
         List<Group> groups = searchResponse.getItems();
         Integer groupId = Integer.valueOf(groups.get(0).getId());
 
@@ -64,14 +67,17 @@ public class VkUserApiService {
 
         Photo photo = photoList.get(0);
 
-        urlCacheManager.addUrl("photo" + actor.getId() + "_" + photo.getId(), sdf.format(new Date()));
+        groupCacheManager.addGroupId(VkGroup.RISING_APP, groupId);
+        urlCacheManager.addUrl("photo" + actor.getId() + "_" + photo.getId(), sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1);
     }
 
     public GetImageUrlResponse getImageUrl() {
 
         GetImageUrlResponse imageUrlResponse = new GetImageUrlResponse();
-        String url = urlCacheManager.getUrl(sdf.format(new Date()));
-        imageUrlResponse.setImageUrl(url);
+        String imageId = urlCacheManager.getUrl(sdf.format(new Date()), OvvaChannel.CHANNEL_1PLUS1);
+        Integer groupId = groupCacheManager.getGroupId(VkGroup.RISING_APP);
+        imageUrlResponse.setImageId(imageId);
+        imageUrlResponse.setGroupId(groupId);
         return imageUrlResponse;
     }
 }

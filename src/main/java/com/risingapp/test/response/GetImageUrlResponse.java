@@ -8,5 +8,6 @@ import lombok.Data;
 @Data
 public class GetImageUrlResponse {
 
-    private String imageUrl;
+    private String imageId;
+    private Integer groupId;
 }
