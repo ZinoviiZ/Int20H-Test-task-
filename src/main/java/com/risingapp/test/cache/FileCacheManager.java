@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by zinoviyzubko on 19.02.17.
  */
 @Component
-public class CacheManager {
+public class FileCacheManager {
 
     private Map<TvProgramId, File> cachedMap;
 

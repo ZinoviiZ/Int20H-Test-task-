@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -39,14 +40,13 @@ public class MainController {
         return "index.html";
     }
 
-    @RequestMapping("/get_tv_program")
+    @RequestMapping("/get/tv_program")
     public ResponseEntity getImage(HttpServletResponse response) throws URISyntaxException, IOException, FontFormatException {
         return ovvaService.getTvProgram(response);
     }
 
-    @RequestMapping("/create")
-    public String firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
-        vkUserApiService.postImageInGroup(code);
-        return "wellDone.html";
+    @RequestMapping("/savePhoto")
+    public ResponseEntity firstStepAuthorize(@RequestParam("code") String code) throws ClientException, ApiException {
+        return  vkUserApiService.getImageUrl(code);
     }
 }

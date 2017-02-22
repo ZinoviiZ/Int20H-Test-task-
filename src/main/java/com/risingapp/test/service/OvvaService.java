@@ -1,6 +1,6 @@
 package com.risingapp.test.service;
 
-import com.risingapp.test.cache.CacheManager;
+import com.risingapp.test.cache.FileCacheManager;
 import com.risingapp.test.connector.OvvaConnector;
 import com.risingapp.test.creator.OvvaQueryCreator;
 import com.risingapp.test.enums.OvvaAction;
@@ -32,7 +32,7 @@ import java.util.Date;
 public class OvvaService {
 
     @Autowired private OvvaConnector ovvaConnector;
-    @Autowired private CacheManager cacheManager;
+    @Autowired private FileCacheManager cacheManager;
 
     @Autowired private OvvaQueryCreator queryCreator;
     @Autowired private ImageGenerator imageGenerator;
